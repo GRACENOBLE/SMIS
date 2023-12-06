@@ -28,7 +28,7 @@ void update_Student(){
 void main()
 {
     int menu_Choice;
-    printf("\t\t\t~~~~~SMIS PORTAL~~~~~\t\t\n\n1.Add student details.\t\t\t\t2.Find student by name or roll number.\n\n3.Find students registered in course.\t\t4.Count of students.\n\n5.Delete student\t\t\t\t6.Update student\n\n");
+    printf("\t\t\t~~~~~SMIS PORTAL~~~~~\t\t\n\n 1.Add student details. \t\t\t 4.Count of students.\n\n 2.Find student by name or roll number.\t\t 5.Update students.\n\n 3.Find students registered in course \t\t 6.Delete Student \n\n");
     scanf( "%d" , &menu_Choice);
     switch(menu_Choice){
 
