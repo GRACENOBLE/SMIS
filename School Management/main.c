@@ -51,7 +51,7 @@ void add_Student(){
     students = (struct student * )realloc(students, total_students * sizeof(struct student));
 
     if (students == NULL){
-        printf("Memory Allocation failed, crash, carsh :(");
+        printf("Memory reallocation failed, crash, crash :(");
         return;
     }
 
@@ -68,7 +68,7 @@ void add_Student(){
     scanf("%s", students[total_students - 1].contact);
     sprintf(students[total_students - 1].id, "STD%04d", total_students);
 
-    printf("\n\nSuccessfully added student details:\nFull name: %s\nStudent ID: %s\nDate of Birth: %s\nGender: %s\nContact: %s",  students[0].name, students[0].id,students[0].date_of_birth,students[0].gender, students[0].contact);
+    // printf("\n\nSuccessfully added student details:\nFull name: %s\nStudent ID: %s\nDate of Birth: %s\nGender: %s\nContact: %s",  students[0].name, students[0].id,students[0].date_of_birth,students[0].gender, students[0].contact);
 
     end_of_add_Student();
 
@@ -112,43 +112,50 @@ void update_Student(){
     printf("\nComming soon\n");
 }
 
-
-
-void main()
-{
+void SelectTask(){
     int menu_Choice;
-    printf("\t\t\t~~~~~SMIS PORTAL~~~~~\t\t\n\n 1.Add student details. \t\t\t 4.Count of students.\n\n 2.Find student by name or roll number.\t\t 5.Update students.\n\n 3.Find students registered in course \t\t 6.Delete Student \n\n");
+    printf("\t\t\t~~~~~SMIS PORTAL~~~~~\t\t\n\n 1.Add student details. \t\t\t 4.Update Student\n\n 2.Find student by name or roll number.\t\t 5.Delete Student\n\n 3.Display Students \t\t 6.Delete Student \n\n");
     scanf( "%d" , &menu_Choice);
+
+
     switch(menu_Choice){
+        case 1:
+            add_Student();
+            break;
 
-case 1:
-    add_Student();
-    break;
+        case 2:
+            find_Student_By_Name_Or_Roll_Number();
+            break;
 
-case 2:
-    find_Student_By_Name_Or_Roll_Number();
-    break;
+        case 3:
+            count_Of_Students();
+            break;
 
-case 3:
-    find_Students_Registered_In_Course();
-    break;
+        case 4:
+            delete_Student();
+            break;
 
-case 4:
-    count_Of_Students;
-    break;
+        case 5:
+            update_Student();
+            break;
 
-case 5:
-    delete_Student();
-    break;
+        case 6:
+            exitProgram();
+            break;
 
-case 6:
-    update_Student();
-    break;
-
-default:
-    printf("Sorry, %d is an invalid choice, lets try that again:\n\n", menu_Choice);
-    main();
-    break;
+        default:
+            printf("Sorry, %d is an invalid choice, lets try that again:\n\n", menu_Choice);
+            SelectTask();
+            break;
 
     }
+}
+
+
+
+int main()
+{
+    SelectTask();
+
+    return 0;
 }
