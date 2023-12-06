@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct student {
     char id[100];
@@ -8,55 +9,18 @@ struct student {
     char gender[100];
     char grade[100];
     char contact[100];
-};
+} students[100];
 
-struct student *students = NULL;
+//struct student *students = NULL;
 int total_students = 0;
 
-void end_of_add_Student(){
-int exitchoice;
-    printf("\n\n\n1.Add another Student\n2.Go back to the main menu\n3.Exit the program\n");
-    scanf("%d", &exitchoice);
-    switch(exitchoice){
-case 1:
-    add_Student();
-    break;
-case 2:
-    main();
-    break;
-case 3:
-    return 0;
-    break;
-default:
-    printf("Sorry that is not a valid choice, Lets try that again:\n\n");
-    end_of_add_Student();
-    break;
-
-
-    }
-}
 void add_Student(){
 
-    students = (struct student *)malloc(sizeof(struct student));
-
-//first memory allocation happens here rather up there ;)
-    if (students == NULL) {
-        printf("Memory allocation failed.");
-        return -1;
-    }
 
     total_students++; //this is increasing the number of students by one every damn time
 
-    //we reallocate the memory to fit the new student kuba intially it was null
-    students = (struct student * )realloc(students, total_students * sizeof(struct student));
-
-    if (students == NULL){
-        printf("Memory reallocation failed, crash, crash :(");
-        return;
-    }
-
     printf("\nEnter Student Details\n");
-    printf("\nFull Name: ");
+    printf("\nFirst Name: ");
     scanf("%99s", students[total_students - 1].name);
     printf("\nDate of Birth: ");
     scanf("%99s", students[total_students - 1].date_of_birth);
@@ -68,21 +32,47 @@ void add_Student(){
     scanf("%s", students[total_students - 1].contact);
     sprintf(students[total_students - 1].id, "STD%04d", total_students);
 
-    // printf("\n\nSuccessfully added student details:\nFull name: %s\nStudent ID: %s\nDate of Birth: %s\nGender: %s\nContact: %s",  students[0].name, students[0].id,students[0].date_of_birth,students[0].gender, students[0].contact);
+    SelectTask();
 
-    end_of_add_Student();
+}
+//convert name to lowercase - any string
+//we need this to make ur program case insensitive
+//imagine a user looking for john doe, yet he saved John Doe
+char toLowerCase(char str[100]){
+     for (int i = 0; i < strlen(str); i++) {
+        str[i] = tolower(str[i]);
+    }
 
+    return str;
 }
 
 void find_Student_By_Name_Or_Roll_Number(){
     char query[100];
     printf("\nEnter Student name or Roll Number\n");
-    scanf("%s", &query);
+    scanf("%s",&query);
 
-    for(int i = 0; i<=total_students; i++){
-        if(students[i].name == query || students[i].id == query){
-             printStudentDetails(i);
+    for(int i = 0; i<total_students; i++){
+
+        //duplicates of id and name so that we dont damage the originals
+        char name[100];
+        char id[100];
+
+        strcpy(name, students[i].name);
+        strcpy(id, students[i].id);
+
+        int comparison = strcmp(strlwr(query),strlwr(name));
+
+        if(comparison == 0){
+           printStudentDetails(i);
+           //printf("Query %s",strlwr(query));
         }
+
+//apparently you cant directly compare strings in C
+// you need the strcmp function from the string.h library, haha
+//c got a library. notice I added it at the top
+        //if(strcmp(toLowerCase(name),toLowerCase(query)) == 0 || strcmp(toLowerCase(id),//toLowerCase(query)) == 0){
+            // printStudentDetails(i);
+      //  }
     }
 }
 
@@ -94,14 +84,16 @@ void printStudentDetails(int num){
     printf("\nGender: %s",students[num].gender);
     printf("\nGrade: %s",students[num].grade);
     printf("\nContact: %s",students[num].contact);
+    printf("\n___________________");
 }
 
-void find_Students_Registered_In_Course(){
-    printf("\nComming soon\n");
-}
+void display_all_Students(){
+    int i = 0;
+     while(i < total_students){
 
-void count_Of_Students(){
-    printf("\nComming soon\n");
+        printStudentDetails(i);
+        i++;
+     }
 }
 
 void delete_Student(){
@@ -112,9 +104,13 @@ void update_Student(){
     printf("\nComming soon\n");
 }
 
+void exit_Program() {
+    free(students);
+}
+
 void SelectTask(){
     int menu_Choice;
-    printf("\t\t\t~~~~~SMIS PORTAL~~~~~\t\t\n\n 1.Add student details. \t\t\t 4.Update Student\n\n 2.Find student by name or roll number.\t\t 5.Delete Student\n\n 3.Display Students \t\t 6.Delete Student \n\n");
+    printf("\t\t\t~~~~~SMIS PORTAL~~~~~\t\t\n\n 1.Add student details. \t\t\t 4.Update Student\n\n 2.Find student by name or roll number.\t\t 5.Delete Student\n\n 3.Display Students \t\t\t 6.Exit program \n\n");
     scanf( "%d" , &menu_Choice);
 
 
@@ -128,7 +124,7 @@ void SelectTask(){
             break;
 
         case 3:
-            count_Of_Students();
+            display_all_Students();
             break;
 
         case 4:
@@ -140,7 +136,7 @@ void SelectTask(){
             break;
 
         case 6:
-            exitProgram();
+            exit_Program();
             break;
 
         default:
@@ -156,6 +152,5 @@ void SelectTask(){
 int main()
 {
     SelectTask();
-
     return 0;
 }
