@@ -13,6 +13,28 @@ struct student {
 struct student *students = NULL;
 int total_students = 0;
 
+void end_of_add_Student(){
+int exitchoice;
+    printf("\n\n\n1.Add another Student\n2.Go back to the main menu\n3.Exit the program\n");
+    scanf("%d", &exitchoice);
+    switch(exitchoice){
+case 1:
+    add_Student();
+    break;
+case 2:
+    main();
+    break;
+case 3:
+    return 0;
+    break;
+default:
+    printf("Sorry that is not a valid choice, Lets try that again:\n\n");
+    end_of_add_Student();
+    break;
+
+
+    }
+}
 void add_Student(){
 
     students = (struct student *)malloc(sizeof(struct student));
@@ -45,6 +67,10 @@ void add_Student(){
     printf("\nContact: ");
     scanf("%s", students[total_students - 1].contact);
     sprintf(students[total_students - 1].id, "STD%04d", total_students);
+
+    printf("\n\nSuccessfully added student details:\nFull name: %s\nStudent ID: %s\nDate of Birth: %s\nGender: %s\nContact: %s",  students[0].name, students[0].id,students[0].date_of_birth,students[0].gender, students[0].contact);
+
+    end_of_add_Student();
 
 }
 
@@ -97,9 +123,6 @@ void main()
 
 case 1:
     add_Student();
-   printf("\n\nFull name: %s\n",  students[0].name);
-   printf("Student ID: %s",  students[0].id);
-
     break;
 
 case 2:
